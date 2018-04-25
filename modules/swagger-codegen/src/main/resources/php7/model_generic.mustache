@@ -7,14 +7,14 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
       *
       * @var string
       */
-    protected static $swaggerModelName = '{{name}}';
+    public const swaggerModelName = '{{name}}';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
       *
       * @var string[]
       */
-    protected static $swaggerTypes = [
+    public const swaggerTypes = [
         {{#vars}}'{{name}}' => '{{{datatype}}}'{{#hasMore}},
         {{/hasMore}}{{/vars}}
     ];
@@ -36,7 +36,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     public static function swaggerTypes()
     {
-        return self::$swaggerTypes{{#parentSchema}} + parent::swaggerTypes(){{/parentSchema}};
+        return self::swaggerTypes{{#parentSchema}} + parent::swaggerTypes(){{/parentSchema}};
     }
 
     /**
@@ -118,7 +118,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     public function getModelName()
     {
-        return self::$swaggerModelName;
+        return self::swaggerModelName;
     }
 
     {{#vars}}{{#isEnum}}{{#allowableValues}}{{#enumVars}}const {{enumName}}_{{{name}}} = {{{value}}};
