@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 return Symfony\CS\Config::create()
     ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
