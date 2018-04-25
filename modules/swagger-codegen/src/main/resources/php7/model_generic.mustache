@@ -55,7 +55,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      *
      * @var string[]
      */
-    protected static $attributeMap = [
+    public const attributeMap = [
         {{#vars}}'{{name}}' => '{{baseName}}'{{#hasMore}},
         {{/hasMore}}{{/vars}}
     ];
@@ -65,7 +65,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      *
      * @var string[]
      */
-    protected static $setters = [
+    public const setters = [
         {{#vars}}'{{name}}' => '{{setter}}'{{#hasMore}},
         {{/hasMore}}{{/vars}}
     ];
@@ -75,7 +75,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      *
      * @var string[]
      */
-    protected static $getters = [
+    public const getters = [
         {{#vars}}'{{name}}' => '{{getter}}'{{#hasMore}},
         {{/hasMore}}{{/vars}}
     ];
@@ -88,7 +88,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     public static function attributeMap()
     {
-        return {{#parentSchema}}parent::attributeMap() + {{/parentSchema}}self::$attributeMap;
+        return {{#parentSchema}}parent::attributeMap() + {{/parentSchema}}self::attributeMap;
     }
 
     /**
@@ -98,7 +98,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     public static function setters()
     {
-        return {{#parentSchema}}parent::setters() + {{/parentSchema}}self::$setters;
+        return {{#parentSchema}}parent::setters() + {{/parentSchema}}self::setters;
     }
 
     /**
@@ -108,7 +108,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      */
     public static function getters()
     {
-        return {{#parentSchema}}parent::getters() + {{/parentSchema}}self::$getters;
+        return {{#parentSchema}}parent::getters() + {{/parentSchema}}self::getters;
     }
 
     /**
