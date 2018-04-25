@@ -281,7 +281,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      * @throws \InvalidArgumentException
      * @return $this
      */
-    public function {{setter}}({{datatype}} ${{name}}): self
+    public function {{setter}}({{baseType}} ${{name}}): self
     {
         {{#isEnum}}
         $allowedValues = $this->{{getter}}AllowableValues();
