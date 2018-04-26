@@ -145,9 +145,10 @@ abstract class AbstractModel implements ModelInterface
     {
         if (null === $offset) {
             $this->container[] = $value;
-        } else {
-            $this->container[$offset] = $value;
+            return;
         }
+
+        $this->container[$offset] = $value;
     }
 
     /**

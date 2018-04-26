@@ -411,12 +411,6 @@ class Configuration
             return null;
         }
 
-        if ($prefix === null) {
-            $keyWithPrefix = $apiKey;
-        } else {
-            $keyWithPrefix = $prefix . ' ' . $apiKey;
-        }
-
-        return $keyWithPrefix;
+        return ($prefix === null) ? $apiKey : $prefix . ' ' . $apiKey;
     }
 }
