@@ -237,7 +237,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
      *
      * @return {{datatype}}
      */
-    public function {{getter}}(): {{baseType}}
+    public function {{getter}}(): {{^required}}?{{/required}}{{baseType}}
     {
         return $this->container['{{name}}'];
     }
@@ -245,11 +245,11 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
     /**
      * Sets {{name}}
      *
-     * @param {{datatype}} ${{name}}{{#description}} {{{description}}}{{/description}}{{^description}} {{{name}}}{{/description}}
+     * @param {{datatype}}{{^required}}|null{{/required}} ${{name}}{{#description}} {{{description}}}{{/description}}{{^description}} {{{name}}}{{/description}}
      * @throws \InvalidArgumentException
      * @return $this
      */
-    public function {{setter}}({{baseType}} ${{name}}): self
+    public function {{setter}}({{^required}}?{{/required}}{{baseType}} ${{name}}): self
     {
         {{#isEnum}}
         $allowedValues = $this->{{getter}}AllowableValues();
