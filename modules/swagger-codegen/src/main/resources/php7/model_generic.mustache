@@ -1,4 +1,4 @@
-class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^parentSchema}}implements ModelInterface, ArrayAccess{{/parentSchema}}
+class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^parentSchema}}extends AbstractModel implements ModelInterface, ArrayAccess{{/parentSchema}}
 {
     public const DISCRIMINATOR = {{#discriminator}}'{{discriminator}}'{{/discriminator}}{{^discriminator}}null{{/discriminator}};
 
@@ -61,6 +61,27 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
     ];
 
     /**
+     * Constructor
+     *
+     * @param mixed[] $data Associated array of property values
+     *                      initializing the model
+     */
+    public function __construct(array $data = null)
+    {
+    {{#parentSchema}}
+        parent::__construct($data);
+    {{/parentSchema}}
+    {{#vars}}
+        $this->container['{{name}}'] = $data['{{name}}'] ?? {{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}null{{/defaultValue}};
+    {{/vars}}
+    {{#discriminator}}
+        // Initialize discriminator property with the model name.
+        $discriminator = array_search('{{discriminator}}', self::ATTRIBUTE_MAP);
+        $this->container[$discriminator] = static::SWAGGER_MODEL_NAME;
+    {{/discriminator}}
+    }
+
+    /**
      * Array of property to type mappings. Used for (de)serialization
      *
      * @return string[]
@@ -73,7 +94,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
     /**
      * Array of property to format mappings. Used for (de)serialization
      *
-     * @return string[]
+     * @return array
      */
     public static function swaggerFormats(): array
     {
@@ -111,16 +132,6 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         return {{#parentSchema}}parent::getters() + {{/parentSchema}}self::GETTERS;
     }
 
-    /**
-     * The original name of the model.
-     *
-     * @return string
-     */
-    public function getModelName(): string
-    {
-        return self::SWAGGER_MODEL_NAME;
-    }
-
     {{#vars}}{{#isEnum}}{{#allowableValues}}{{#enumVars}}const {{enumName}}_{{{name}}} = {{{value}}};
     {{/enumVars}}{{/allowableValues}}{{/isEnum}}{{/vars}}
 
@@ -138,38 +149,6 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         ];
     }
     {{/isEnum}}{{/vars}}
-
-    {{^parentSchema}}
-    /**
-     * Associative array for storing property values
-     *
-     * @var mixed[]
-     */
-    protected $container = [];
-    {{/parentSchema}}
-
-    /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
-    public function __construct(array $data = null)
-    {
-        {{#parentSchema}}
-        parent::__construct($data);
-
-        {{/parentSchema}}
-        {{#vars}}
-        $this->container['{{name}}'] = $data['{{name}}'] ?? {{#defaultValue}}{{{defaultValue}}}{{/defaultValue}}{{^defaultValue}}null{{/defaultValue}};
-        {{/vars}}
-        {{#discriminator}}
-
-        // Initialize discriminator property with the model name.
-        $discriminator = array_search('{{discriminator}}', self::ATTRIBUTE_MAP);
-        $this->container[$discriminator] = static::SWAGGER_MODEL_NAME;
-        {{/discriminator}}
-    }
 
     /**
      * Show all the invalid properties with reasons.
@@ -346,58 +325,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         return $this;
     }
     {{/vars}}
-    /**
-     * Returns true if offset exists. False otherwise.
-     *
-     * @param integer $offset Offset
-     *
-     * @return boolean
-     */
-    public function offsetExists($offset): bool
-    {
-        return isset($this->container[$offset]);
-    }
 
-    /**
-     * Gets offset.
-     *
-     * @param integer $offset Offset
-     *
-     * @return int|null
-     */
-    public function offsetGet($offset)
-    {
-        return $this->container[$offset] ?? null;
-    }
-
-    /**
-     * Sets value based on offset.
-     *
-     * @param integer $offset Offset
-     * @param mixed   $value  Value to be set
-     *
-     * @return void
-     */
-    public function offsetSet($offset, $value)
-    {
-        if (null === $offset) {
-            $this->container[] = $value;
-        } else {
-            $this->container[$offset] = $value;
-        }
-    }
-
-    /**
-     * Unsets offset.
-     *
-     * @param integer $offset Offset
-     *
-     * @return void
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->container[$offset]);
-    }
 
     /**
      * Gets the string presentation of the object
