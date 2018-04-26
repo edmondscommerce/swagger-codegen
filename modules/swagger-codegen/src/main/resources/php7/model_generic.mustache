@@ -230,17 +230,6 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         return $invalidProperties;
     }
 
-    /**
-     * Validate all the properties in the model
-     * return true if all passed
-     *
-     * @return bool True if all properties are valid
-     */
-    public function valid(): bool
-    {
-        return $this->listInvalidProperties() === [];
-    }
-
     {{#vars}}
 
     /**
@@ -325,22 +314,4 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         return $this;
     }
     {{/vars}}
-
-
-    /**
-     * Gets the string presentation of the object
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        if (\defined('JSON_PRETTY_PRINT')) { // use JSON pretty print
-            return \json_encode(
-                ObjectSerializer::sanitizeForSerialization($this),
-                JSON_PRETTY_PRINT
-            );
-        }
-
-        return \json_encode(ObjectSerializer::sanitizeForSerialization($this));
-    }
 }
