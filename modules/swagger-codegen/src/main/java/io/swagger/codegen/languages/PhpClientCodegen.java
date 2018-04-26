@@ -45,7 +45,7 @@ public class PhpClientCodegen extends DefaultCodegen implements CodegenConfig {
     protected String docsBasePath = "docs";
     protected String apiDirName = "Api";
     protected String modelDirName = "Model";
-    protected String variableNamingConvention= "snake_case";
+    protected String variableNamingConvention= "camelCase";
     protected String apiDocPath = docsBasePath + "/" + apiDirName;
     protected String modelDocPath = docsBasePath + "/" + modelDirName;
 
@@ -154,6 +154,16 @@ public class PhpClientCodegen extends DefaultCodegen implements CodegenConfig {
 
     public String toPackagePath(String packageName, String basePath) {
         return (getPackagePath() + File.separatorChar + toSrcPath(packageName, basePath));
+    }
+
+    /**
+     * Output the Getter name for boolean property, e.g. getActive
+     *
+     * @param name the name of the property
+     * @return getter name based on naming convention
+     */
+    public String toBooleanGetter(String name) {
+        return "is" + getterAndSetterCapitalize(name);
     }
 
     public String toSrcPath(String packageName, String basePath) {
@@ -296,11 +306,14 @@ public class PhpClientCodegen extends DefaultCodegen implements CodegenConfig {
         // make test path available in mustache template
         additionalProperties.put("testBasePath", testBasePath);
 
+        // Additions
+        supportingFiles.add(new SupportingFile("phpstan.mustache", toPackagePath(invokerPackage, "./qaConfig"), "phpstan.neon"));
+        supportingFiles.add(new SupportingFile("ModelAbstract.mustache", toPackagePath(modelPackage, srcBasePath), "AbstractModel.php"));
+
         supportingFiles.add(new SupportingFile("ApiException.mustache", toPackagePath(invokerPackage, srcBasePath), "ApiException.php"));
         supportingFiles.add(new SupportingFile("Configuration.mustache", toPackagePath(invokerPackage, srcBasePath), "Configuration.php"));
         supportingFiles.add(new SupportingFile("ObjectSerializer.mustache", toPackagePath(invokerPackage, srcBasePath), "ObjectSerializer.php"));
         supportingFiles.add(new SupportingFile("ModelInterface.mustache", toPackagePath(modelPackage, srcBasePath), "ModelInterface.php"));
-        supportingFiles.add(new SupportingFile("ModelAbstract.mustache", toPackagePath(modelPackage, srcBasePath), "AbstractModel.php"));
         supportingFiles.add(new SupportingFile("HeaderSelector.mustache", toPackagePath(invokerPackage, srcBasePath), "HeaderSelector.php"));
         supportingFiles.add(new SupportingFile("composer.mustache", getPackagePath(), "composer.json"));
         supportingFiles.add(new SupportingFile("README.mustache", getPackagePath(), "README.md"));

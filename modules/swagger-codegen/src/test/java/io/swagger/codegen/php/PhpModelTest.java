@@ -77,7 +77,7 @@ public class PhpModelTest {
         Assert.assertEquals(property3.baseName, "createdAt");
         Assert.assertEquals(property3.complexType, "\\DateTime");
         Assert.assertEquals(property3.datatype, "\\DateTime");
-        Assert.assertEquals(property3.name, "created_at");
+        Assert.assertEquals(property3.name, "createdAt");
         Assert.assertEquals(property3.defaultValue, null);
         Assert.assertEquals(property3.baseType, "\\DateTime");
         Assert.assertFalse(property3.hasMore);
