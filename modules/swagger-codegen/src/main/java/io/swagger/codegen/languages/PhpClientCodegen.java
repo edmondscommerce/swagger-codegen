@@ -308,6 +308,7 @@ public class PhpClientCodegen extends DefaultCodegen implements CodegenConfig {
 
         // Additions
         supportingFiles.add(new SupportingFile("phpstan.mustache", toPackagePath(invokerPackage, "./qaConfig"), "phpstan.neon"));
+        supportingFiles.add(new SupportingFile("phpmd.xml.mustache", toPackagePath(invokerPackage, "./qaConfig/phpmd"), "ruleset.xml"));
         supportingFiles.add(new SupportingFile("ModelAbstract.mustache", toPackagePath(modelPackage, srcBasePath), "AbstractModel.php"));
 
         supportingFiles.add(new SupportingFile("ApiException.mustache", toPackagePath(invokerPackage, srcBasePath), "ApiException.php"));
