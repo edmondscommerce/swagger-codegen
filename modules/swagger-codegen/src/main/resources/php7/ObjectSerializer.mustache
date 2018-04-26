@@ -38,6 +38,7 @@ class ObjectSerializer
      * @param string $format the format of the Swagger type of the data
      *
      * @return string|object|array serialized form of $data
+     * //phpcs:disable
      */
     public static function sanitizeForSerialization($data, ?string $format = null)
     {
@@ -79,6 +80,7 @@ class ObjectSerializer
     }
 
     /**
+     * //phpcs:enable
      * Sanitize filename by removing path.
      * e.g. ../../sun.gif becomes sun.gif
      *
@@ -178,6 +180,7 @@ class ObjectSerializer
     }
 
     /**
+     * //phpcs:disable
      * Serialize an array to a string.
      *
      * @param array  $collection                 collection to serialize to a string
@@ -327,4 +330,5 @@ class ObjectSerializer
 
         return $instance;
     }
+    //phpcs:enable
 }

@@ -310,6 +310,7 @@ public class PhpClientCodegen extends DefaultCodegen implements CodegenConfig {
         supportingFiles.add(new SupportingFile("phpstan.mustache", toPackagePath(invokerPackage, "./qaConfig"), "phpstan.neon"));
         supportingFiles.add(new SupportingFile("phpmd.xml.mustache", toPackagePath(invokerPackage, "./qaConfig/phpmd"), "ruleset.xml"));
         supportingFiles.add(new SupportingFile("ModelAbstract.mustache", toPackagePath(modelPackage, srcBasePath), "AbstractModel.php"));
+        supportingFiles.add(new SupportingFile("gitignore.mustache", getPackagePath(), ".gitignore"));
 
         supportingFiles.add(new SupportingFile("ApiException.mustache", toPackagePath(invokerPackage, srcBasePath), "ApiException.php"));
         supportingFiles.add(new SupportingFile("Configuration.mustache", toPackagePath(invokerPackage, srcBasePath), "Configuration.php"));
@@ -318,10 +319,10 @@ public class PhpClientCodegen extends DefaultCodegen implements CodegenConfig {
         supportingFiles.add(new SupportingFile("HeaderSelector.mustache", toPackagePath(invokerPackage, srcBasePath), "HeaderSelector.php"));
         supportingFiles.add(new SupportingFile("composer.mustache", getPackagePath(), "composer.json"));
         supportingFiles.add(new SupportingFile("README.mustache", getPackagePath(), "README.md"));
-        supportingFiles.add(new SupportingFile("phpunit.xml.mustache", getPackagePath(), "phpunit.xml.dist"));
-        supportingFiles.add(new SupportingFile(".travis.yml", getPackagePath(), ".travis.yml"));
-        supportingFiles.add(new SupportingFile(".php_cs", getPackagePath(), ".php_cs"));
-        supportingFiles.add(new SupportingFile("git_push.sh.mustache", getPackagePath(), "git_push.sh"));
+//        supportingFiles.add(new SupportingFile("phpunit.xml.mustache", getPackagePath(), "phpunit.xml.dist"));
+//        supportingFiles.add(new SupportingFile(".travis.yml", getPackagePath(), ".travis.yml"));
+//        supportingFiles.add(new SupportingFile(".php_cs", getPackagePath(), ".php_cs"));
+//        supportingFiles.add(new SupportingFile("git_push.sh.mustache", getPackagePath(), "git_push.sh"));
     }
 
     @Override

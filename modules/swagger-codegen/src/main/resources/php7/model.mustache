@@ -28,6 +28,7 @@ use \ArrayAccess;
 {{/isEnum}}
 
 /**
+ * // phpcs:disable
  * {{classname}} Class Doc Comment
  *
  * @category Class
@@ -37,6 +38,7 @@ use \ArrayAccess;
  * @package  {{invokerPackage}}
  * @author   Swagger Codegen team
  * @link     https://github.com/swagger-api/swagger-codegen
+ * // phpcs:enable
  */
 {{#isEnum}}{{>model_enum}}{{/isEnum}}{{^isEnum}}{{>model_generic}}{{/isEnum}}
 {{/model}}{{/models}}
