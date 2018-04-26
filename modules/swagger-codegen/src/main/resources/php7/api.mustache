@@ -135,8 +135,8 @@ use {{invokerPackage}}\ObjectSerializer;
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
-                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                    ($e->getResponse() !== null) ? $e->getResponse()->getHeaders() : [],
+                    ($e->getResponse() !== null) ? $e->getResponse()->getBody()->getContents() : null
                 );
             }
 
@@ -245,7 +245,7 @@ use {{invokerPackage}}\ObjectSerializer;
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
-                function ($response) use ($returnType) {
+                function ($response) {{#returnType}}use ($returnType){{/returnType}} {
                     {{#returnType}}
                     $responseBody = $response->getBody();
                     if ($returnType === '\SplFileObject') {
@@ -288,7 +288,7 @@ use {{invokerPackage}}\ObjectSerializer;
      * Create request for operation '{{{operationId}}}'
      *
 {{#allParams}}
-     * @param  {{dataType}} ${{paramName}}{{#description}} {{description}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}
+     * @param  {{dataType}}|array|null ${{paramName}}{{#description}} {{description}}{{/description}} {{#required}}(required){{/required}}{{^required}}(optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}
 {{/allParams}}
      *
      * @throws \InvalidArgumentException
