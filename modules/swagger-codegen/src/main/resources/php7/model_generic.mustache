@@ -60,6 +60,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         {{/hasMore}}{{/vars}}
     ];
 
+    {{^isArrayModel}}
     /**
      * Constructor
      *
@@ -80,6 +81,7 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         $this->container[$discriminator] = static::SWAGGER_MODEL_NAME;
     {{/discriminator}}
     }
+    {{/isArrayModel}}
 
     /**
      * Array of property to type mappings. Used for (de)serialization
