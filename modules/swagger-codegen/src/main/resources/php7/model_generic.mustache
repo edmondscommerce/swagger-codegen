@@ -1,72 +1,72 @@
 class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^parentSchema}}extends AbstractModel implements ModelInterface, ArrayAccess{{/parentSchema}}
 {
-    public const DISCRIMINATOR = {{#discriminator}}'{{discriminator}}'{{/discriminator}}{{^discriminator}}null{{/discriminator}};
+public const DISCRIMINATOR = {{#discriminator}}'{{discriminator}}'{{/discriminator}}{{^discriminator}}null{{/discriminator}};
 
-    /**
-      * The original name of the model.
-      *
-      * @var string
-      */
-    public const SWAGGER_MODEL_NAME = '{{name}}';
+/**
+* The original name of the model.
+*
+* @var string
+*/
+public const SWAGGER_MODEL_NAME = '{{name}}';
 
-    /**
-      * Array of property to type mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
-    public const SWAGGER_TYPES = [
-        {{#vars}}'{{name}}' => '{{{datatype}}}'{{#hasMore}},
-        {{/hasMore}}{{/vars}}
-    ];
+/**
+* Array of property to type mappings. Used for (de)serialization
+*
+* @var string[]
+*/
+public const SWAGGER_TYPES = [
+{{#vars}}'{{name}}' => '{{{datatype}}}'{{#hasMore}},
+{{/hasMore}}{{/vars}}
+];
 
-    /**
-      * Array of property to format mappings. Used for (de)serialization
-      *
-      * @var string[]
-      */
-    public const SWAGGER_FORMATS = [
-        {{#vars}}'{{name}}' => {{#dataFormat}}'{{{dataFormat}}}'{{/dataFormat}}{{^dataFormat}}null{{/dataFormat}}{{#hasMore}},
-        {{/hasMore}}{{/vars}}
-    ];
+/**
+* Array of property to format mappings. Used for (de)serialization
+*
+* @var string[]
+*/
+public const SWAGGER_FORMATS = [
+{{#vars}}'{{name}}' => {{#dataFormat}}'{{{dataFormat}}}'{{/dataFormat}}{{^dataFormat}}null{{/dataFormat}}{{#hasMore}},
+{{/hasMore}}{{/vars}}
+];
 
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @var string[]
-     */
-    public const ATTRIBUTE_MAP = [
-        {{#vars}}'{{name}}' => '{{baseName}}'{{#hasMore}},
-        {{/hasMore}}{{/vars}}
-    ];
+/**
+* Array of attributes where the key is the local name,
+* and the value is the original name
+*
+* @var string[]
+*/
+public const ATTRIBUTE_MAP = [
+{{#vars}}'{{name}}' => '{{baseName}}'{{#hasMore}},
+{{/hasMore}}{{/vars}}
+];
 
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @var string[]
-     */
-    public const SETTERS = [
-        {{#vars}}'{{name}}' => '{{setter}}'{{#hasMore}},
-        {{/hasMore}}{{/vars}}
-    ];
+/**
+* Array of attributes to setter functions (for deserialization of responses)
+*
+* @var string[]
+*/
+public const SETTERS = [
+{{#vars}}'{{name}}' => '{{setter}}'{{#hasMore}},
+{{/hasMore}}{{/vars}}
+];
 
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @var string[]
-     */
-    public const GETTERS = [
-        {{#vars}}'{{name}}' => '{{getter}}'{{#hasMore}},
-        {{/hasMore}}{{/vars}}
-    ];
+/**
+* Array of attributes to getter functions (for serialization of requests)
+*
+* @var string[]
+*/
+public const GETTERS = [
+{{#vars}}'{{name}}' => '{{getter}}'{{#hasMore}},
+{{/hasMore}}{{/vars}}
+];
 
-    {{^isArrayModel}}
+{{^isArrayModel}}
     /**
-     * Constructor
-     *
-     * @param mixed[] $data Associated array of property values
-     *                      initializing the model
-     */
+    * Constructor
+    *
+    * @param mixed[] $data Associated array of property values
+    *                      initializing the model
+    */
     public function __construct(array $data = null)
     {
     {{#parentSchema}}
@@ -81,243 +81,245 @@ class {{classname}} {{#parentSchema}}extends {{{parent}}} {{/parentSchema}}{{^pa
         $this->container[$discriminator] = static::SWAGGER_MODEL_NAME;
     {{/discriminator}}
     }
-    {{/isArrayModel}}
+{{/isArrayModel}}
 
+/**
+* Array of property to type mappings. Used for (de)serialization
+*
+* @return string[]
+*/
+public static function swaggerTypes(): array
+{
+return self::SWAGGER_TYPES{{#parentSchema}} + parent::swaggerTypes(){{/parentSchema}};
+}
+
+/**
+* Array of property to format mappings. Used for (de)serialization
+*
+* @return array
+*/
+public static function swaggerFormats(): array
+{
+return self::SWAGGER_FORMATS{{#parentSchema}} + parent::swaggerFormats(){{/parentSchema}};
+}
+
+/**
+* Array of attributes where the key is the local name,
+* and the value is the original name
+*
+* @return string[]
+*/
+public static function attributeMap(): array
+{
+return {{#parentSchema}}parent::attributeMap() + {{/parentSchema}}self::ATTRIBUTE_MAP;
+}
+
+/**
+* Array of attributes to setter functions (for deserialization of responses)
+*
+* @return string[]
+*/
+public static function setters(): array
+{
+return {{#parentSchema}}parent::setters() + {{/parentSchema}}self::SETTERS;
+}
+
+/**
+* Array of attributes to getter functions (for serialization of requests)
+*
+* @return string[]
+*/
+public static function getters(): array
+{
+return {{#parentSchema}}parent::getters() + {{/parentSchema}}self::GETTERS;
+}
+
+{{#vars}}{{#isEnum}}{{#allowableValues}}{{#enumVars}}public const {{enumName}}_{{{name}}} = {{{value}}};
+{{/enumVars}}{{/allowableValues}}{{/isEnum}}{{/vars}}
+
+{{#vars}}{{#isEnum}}public const ENUM_{{enumName}}_VALUES = [
+{{#allowableValues}}{{#enumVars}}self::{{enumName}}_{{{name}}},{{^-last}}
+{{/-last}}{{/enumVars}}{{/allowableValues}}
+];
+{{/isEnum}}{{/vars}}
+
+
+{{#vars}}{{#isEnum}}
     /**
-     * Array of property to type mappings. Used for (de)serialization
-     *
-     * @return string[]
-     */
-    public static function swaggerTypes(): array
-    {
-        return self::SWAGGER_TYPES{{#parentSchema}} + parent::swaggerTypes(){{/parentSchema}};
-    }
-
-    /**
-     * Array of property to format mappings. Used for (de)serialization
-     *
-     * @return array
-     */
-    public static function swaggerFormats(): array
-    {
-        return self::SWAGGER_FORMATS{{#parentSchema}} + parent::swaggerFormats(){{/parentSchema}};
-    }
-
-    /**
-     * Array of attributes where the key is the local name,
-     * and the value is the original name
-     *
-     * @return string[]
-     */
-    public static function attributeMap(): array
-    {
-        return {{#parentSchema}}parent::attributeMap() + {{/parentSchema}}self::ATTRIBUTE_MAP;
-    }
-
-    /**
-     * Array of attributes to setter functions (for deserialization of responses)
-     *
-     * @return string[]
-     */
-    public static function setters(): array
-    {
-        return {{#parentSchema}}parent::setters() + {{/parentSchema}}self::SETTERS;
-    }
-
-    /**
-     * Array of attributes to getter functions (for serialization of requests)
-     *
-     * @return string[]
-     */
-    public static function getters(): array
-    {
-        return {{#parentSchema}}parent::getters() + {{/parentSchema}}self::GETTERS;
-    }
-
-    {{#vars}}{{#isEnum}}{{#allowableValues}}{{#enumVars}}public const {{enumName}}_{{{name}}} = {{{value}}};
-    {{/enumVars}}{{/allowableValues}}{{/isEnum}}{{/vars}}
-
-    {{#vars}}{{#isEnum}}public const ENUM_{{enumName}}_VALUES = [
-        {{#allowableValues}}{{#enumVars}}self::{{enumName}}_{{{name}}},{{^-last}}
-    {{/-last}}{{/enumVars}}{{/allowableValues}}
-    ];
-    {{/isEnum}}{{/vars}}
-
-
-    {{#vars}}{{#isEnum}}
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
+    * Gets allowable values of the enum
+    *
+    * @return string[]
+    */
     public function {{getter}}AllowableValues(): array
     {
-        return self::ENUM_{{enumName}}_VALUES;
+    return self::ENUM_{{enumName}}_VALUES;
     }
-    {{/isEnum}}{{/vars}}
+{{/isEnum}}{{/vars}}
 
-    /**
-     * Show all the invalid properties with reasons.
-     *
-     * @return array invalid properties with reasons
-     */
-    public function listInvalidProperties(): array
-    {
-        {{#parent}}
-        $invalidProperties = parent::listInvalidProperties();
-        {{/parent}}
-        {{^parent}}
-        $invalidProperties = [];
-        {{/parent}}
+/**
+* Show all the invalid properties with reasons.
+*
+* @return array invalid properties with reasons
+*/
+public function listInvalidProperties(): array
+{
+{{#parent}}
+    $invalidProperties = parent::listInvalidProperties();
+{{/parent}}
+{{^parent}}
+    $invalidProperties = [];
+{{/parent}}
 
-        {{#vars}}
-        {{#required}}
+{{#vars}}
+    {{#required}}
         if ($this->container['{{name}}'] === null) {
-            $invalidProperties[] = "'{{name}}' can't be null";
+        $invalidProperties[] = "'{{name}}' can't be null";
         }
-        {{/required}}
-        {{#isEnum}}
+    {{/required}}
+    {{#isEnum}}
         {{^isContainer}}
-        $allowedValues = $this->{{getter}}AllowableValues();
-        if (null !== $this->container['{{name}}'] && !\in_array($this->container['{{name}}'], $allowedValues, true)) {
+            $allowedValues = $this->{{getter}}AllowableValues();
+            if (null !== $this->container['{{name}}'] && !\in_array($this->container['{{name}}'], $allowedValues, true)) {
             $invalidProperties[] = sprintf(
-                "invalid value for '{{name}}', must be one of '%s'",
-                implode("', '", $allowedValues)
+            "invalid value for '{{name}}', must be one of '%s'",
+            implode("', '", $allowedValues)
             );
-        }
+            }
 
         {{/isContainer}}
-        {{/isEnum}}
-        {{#hasValidation}}
+    {{/isEnum}}
+    {{#hasValidation}}
         {{#maxLength}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(\mb_strlen($this->container['{{name}}']) > {{maxLength}})) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(\mb_strlen($this->container['{{name}}']) > {{maxLength}})) {
             $invalidProperties[] = "invalid value for '{{name}}', the character length must be smaller than or equal to {{{maxLength}}}.";
-        }
+            }
 
         {{/maxLength}}
         {{#minLength}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(\mb_strlen($this->container['{{name}}']) < {{minLength}})) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(\mb_strlen($this->container['{{name}}']) < {{minLength}})) {
             $invalidProperties[] = "invalid value for '{{name}}', the character length must be bigger than or equal to {{{minLength}}}.";
-        }
+            }
 
         {{/minLength}}
         {{#maximum}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}($this->container['{{name}}'] >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}})) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}($this->container['{{name}}'] >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}})) {
             $invalidProperties[] = "invalid value for '{{name}}', must be smaller than {{^exclusiveMaximum}}or equal to {{/exclusiveMaximum}}{{maximum}}.";
-        }
+            }
 
         {{/maximum}}
         {{#minimum}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}($this->container['{{name}}'] <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}})) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}($this->container['{{name}}'] <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}})) {
             $invalidProperties[] = "invalid value for '{{name}}', must be bigger than {{^exclusiveMinimum}}or equal to {{/exclusiveMinimum}}{{minimum}}.";
-        }
+            }
 
         {{/minimum}}
         {{#pattern}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}!preg_match("{{{pattern}}}", $this->container['{{name}}'])) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}!preg_match("{{{pattern}}}", $this->container['{{name}}'])) {
             $invalidProperties[] = "invalid value for '{{name}}', must be conform to the pattern {{{pattern}}}.";
-        }
+            }
 
         {{/pattern}}
         {{#maxItems}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(count($this->container['{{name}}']) > {{maxItems}})) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(count($this->container['{{name}}']) > {{maxItems}})) {
             $invalidProperties[] = "invalid value for '{{name}}', number of items must be less than or equal to {{{maxItems}}}.";
-        }
+            }
 
         {{/maxItems}}
         {{#minItems}}
-        if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(count($this->container['{{name}}']) < {{minItems}})) {
+            if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(count($this->container['{{name}}']) < {{minItems}})) {
             $invalidProperties[] = "invalid value for '{{name}}', number of items must be greater than or equal to {{{minItems}}}.";
-        }
+            }
 
         {{/minItems}}
-        {{/hasValidation}}
-        {{/vars}}
-        return $invalidProperties;
-    }
+    {{/hasValidation}}
+{{/vars}}
+return $invalidProperties;
+}
 
-    {{#vars}}
+{{#vars}}
 
     /**
-     * Gets {{name}}
-     *
-     * @return {{datatype}}
-     */
+    * Gets {{name}}
+    *
+    * @return {{datatype}}
+    */
     public function {{getter}}(): {{^required}}?{{/required}}{{baseType}}
     {
-        return $this->container['{{name}}'];
+    return $this->container['{{name}}'];
     }
 
     /**
-     * Sets {{name}}
-     *
-     * @param {{datatype}}{{^required}}|null{{/required}} ${{name}}{{#description}} {{{description}}}{{/description}}{{^description}} {{{name}}}{{/description}}
-     * @throws \InvalidArgumentException
-     * @return $this
-     */
+    * Sets {{name}}
+    *
+    * {{#description}}{{{description}}}{{/description}}
+    *
+    * @param {{datatype}}{{^required}}|null{{/required}} ${{name}}
+    * @throws \InvalidArgumentException
+    * @return $this
+    */
     public function {{setter}}({{^required}}?{{/required}}{{baseType}} ${{name}}): self
     {
-        {{#isEnum}}
+    {{#isEnum}}
         $allowedValues = $this->{{getter}}AllowableValues();
         {{^isContainer}}
-        if ({{^required}}null !== ${{name}} && {{/required}}!\in_array(${{{name}}}, $allowedValues, true)) {
+            if ({{^required}}null !== ${{name}} && {{/required}}!\in_array(${{{name}}}, $allowedValues, true)) {
             throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value for '{{name}}', must be one of '%s'",
-                    implode("', '", $allowedValues)
-                )
+            sprintf(
+            "Invalid value for '{{name}}', must be one of '%s'",
+            implode("', '", $allowedValues)
+            )
             );
-        }
+            }
         {{/isContainer}}
         {{#isContainer}}
-        if ({{^required}}null !== $${{name}} && {{/required}}\array_diff(${{{name}}}, $allowedValues)) {
+            if ({{^required}}null !== $${{name}} && {{/required}}\array_diff(${{{name}}}, $allowedValues)) {
             throw new \InvalidArgumentException(
-                \sprintf(
-                    "Invalid value for '{{name}}', must be one of '%s'",
-                    implode("', '", $allowedValues)
-                )
+            \sprintf(
+            "Invalid value for '{{name}}', must be one of '%s'",
+            implode("', '", $allowedValues)
+            )
             );
-        }
+            }
         {{/isContainer}}
-        {{/isEnum}}
-        {{#hasValidation}}
+    {{/isEnum}}
+    {{#hasValidation}}
         {{#maxLength}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(\mb_strlen(${{name}}) > {{maxLength}})) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(\mb_strlen(${{name}}) > {{maxLength}})) {
             throw new \InvalidArgumentException('invalid length for ${{name}} when calling {{classname}}.{{operationId}}, must be smaller than or equal to {{maxLength}}.');
-        }{{/maxLength}}
+            }{{/maxLength}}
         {{#minLength}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(\mb_strlen(${{name}}) < {{minLength}})) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(\mb_strlen(${{name}}) < {{minLength}})) {
             throw new \InvalidArgumentException('invalid length for ${{name}} when calling {{classname}}.{{operationId}}, must be bigger than or equal to {{minLength}}.');
-        }
+            }
         {{/minLength}}
         {{#maximum}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(${{name}} >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}})) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(${{name}} >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}})) {
             throw new \InvalidArgumentException('invalid value for ${{name}} when calling {{classname}}.{{operationId}}, must be smaller than {{^exclusiveMaximum}}or equal to {{/exclusiveMaximum}}{{maximum}}.');
-        }
+            }
         {{/maximum}}
         {{#minimum}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(${{name}} <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}})) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(${{name}} <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}})) {
             throw new \InvalidArgumentException('invalid value for ${{name}} when calling {{classname}}.{{operationId}}, must be bigger than {{^exclusiveMinimum}}or equal to {{/exclusiveMinimum}}{{minimum}}.');
-        }
+            }
         {{/minimum}}
         {{#pattern}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(!preg_match("{{{pattern}}}", ${{name}}))) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(!preg_match("{{{pattern}}}", ${{name}}))) {
             throw new \InvalidArgumentException("invalid value for ${{name}} when calling {{classname}}.{{operationId}}, must conform to the pattern {{{pattern}}}.");
-        }
+            }
         {{/pattern}}
         {{#maxItems}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(count(${{name}}) > {{maxItems}})) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(count(${{name}}) > {{maxItems}})) {
             throw new \InvalidArgumentException('invalid value for ${{name}} when calling {{classname}}.{{operationId}}, number of items must be less than or equal to {{maxItems}}.');
-        }{{/maxItems}}
+            }{{/maxItems}}
         {{#minItems}}
-        if ({{^required}}null !== ${{name}} && {{/required}}(count(${{name}}) < {{minItems}})) {
+            if ({{^required}}null !== ${{name}} && {{/required}}(count(${{name}}) < {{minItems}})) {
             throw new \InvalidArgumentException('invalid length for ${{name}} when calling {{classname}}.{{operationId}}, number of items must be greater than or equal to {{minItems}}.');
-        }
+            }
         {{/minItems}}
-        {{/hasValidation}}
-        $this->container['{{name}}'] = ${{name}};
+    {{/hasValidation}}
+    $this->container['{{name}}'] = ${{name}};
 
-        return $this;
+    return $this;
     }
-    {{/vars}}
+{{/vars}}
 }
