@@ -173,14 +173,14 @@ public function listInvalidProperties(): array
 {{#vars}}
     {{#required}}
         if ($this->container['{{name}}'] === null) {
-        $invalidProperties[] = "'{{name}}' can't be null";
+        $invalidProperties['{{name}}'][] = "'{{name}}' can't be null";
         }
     {{/required}}
     {{#isEnum}}
         {{^isContainer}}
             $allowedValues = $this->{{getter}}AllowableValues();
             if (null !== $this->container['{{name}}'] && !\in_array($this->container['{{name}}'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
+            $invalidProperties['{{name}}'][] = sprintf(
             "invalid value for '{{name}}', must be one of '%s'",
             implode("', '", $allowedValues)
             );
@@ -191,43 +191,43 @@ public function listInvalidProperties(): array
     {{#hasValidation}}
         {{#maxLength}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(\mb_strlen($this->container['{{name}}']) > {{maxLength}})) {
-            $invalidProperties[] = "invalid value for '{{name}}', the character length must be smaller than or equal to {{{maxLength}}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', the character length must be smaller than or equal to {{{maxLength}}}.";
             }
 
         {{/maxLength}}
         {{#minLength}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(\mb_strlen($this->container['{{name}}']) < {{minLength}})) {
-            $invalidProperties[] = "invalid value for '{{name}}', the character length must be bigger than or equal to {{{minLength}}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', the character length must be bigger than or equal to {{{minLength}}}.";
             }
 
         {{/minLength}}
         {{#maximum}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}($this->container['{{name}}'] >{{#exclusiveMaximum}}={{/exclusiveMaximum}} {{maximum}})) {
-            $invalidProperties[] = "invalid value for '{{name}}', must be smaller than {{^exclusiveMaximum}}or equal to {{/exclusiveMaximum}}{{maximum}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', must be smaller than {{^exclusiveMaximum}}or equal to {{/exclusiveMaximum}}{{maximum}}.";
             }
 
         {{/maximum}}
         {{#minimum}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}($this->container['{{name}}'] <{{#exclusiveMinimum}}={{/exclusiveMinimum}} {{minimum}})) {
-            $invalidProperties[] = "invalid value for '{{name}}', must be bigger than {{^exclusiveMinimum}}or equal to {{/exclusiveMinimum}}{{minimum}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', must be bigger than {{^exclusiveMinimum}}or equal to {{/exclusiveMinimum}}{{minimum}}.";
             }
 
         {{/minimum}}
         {{#pattern}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}!preg_match("{{{pattern}}}", $this->container['{{name}}'])) {
-            $invalidProperties[] = "invalid value for '{{name}}', must be conform to the pattern {{{pattern}}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', must be conform to the pattern {{{pattern}}}.";
             }
 
         {{/pattern}}
         {{#maxItems}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(count($this->container['{{name}}']) > {{maxItems}})) {
-            $invalidProperties[] = "invalid value for '{{name}}', number of items must be less than or equal to {{{maxItems}}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', number of items must be less than or equal to {{{maxItems}}}.";
             }
 
         {{/maxItems}}
         {{#minItems}}
             if ({{^required}}null !== $this->container['{{name}}'] && {{/required}}(count($this->container['{{name}}']) < {{minItems}})) {
-            $invalidProperties[] = "invalid value for '{{name}}', number of items must be greater than or equal to {{{minItems}}}.";
+            $invalidProperties['{{name}}'][] = "invalid value for '{{name}}', number of items must be greater than or equal to {{{minItems}}}.";
             }
 
         {{/minItems}}
