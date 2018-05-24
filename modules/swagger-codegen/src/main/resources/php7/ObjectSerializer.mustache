@@ -105,7 +105,7 @@ class ObjectSerializer
      *
      * @return string the serialized object
      */
-    public static function toPathValue($value)
+    public static function toPathValue(string $value)
     {
         return rawurlencode(self::toString($value));
     }
@@ -166,17 +166,17 @@ class ObjectSerializer
      * the parameter. If it's a string, pass through unchanged
      * If it's a datetime object, format it in ISO8601
      *
-     * @param string|\DateTime $value the value of the parameter
+     * @param mixed $value the value of the parameter
      *
      * @return string the header string
      */
-    public static function toString($value)
+    public static function toString($value): string
     {
         if ($value instanceof \DateTime) { // datetime in ISO8601 format
             return $value->format(\DateTime::ATOM);
         }
 
-        return $value;
+        return (string) $value;
     }
 
     /**
@@ -254,7 +254,6 @@ class ObjectSerializer
         }
 
         if ($class === 'object') {
-            settype($data, 'array');
             return $data;
         }
 
